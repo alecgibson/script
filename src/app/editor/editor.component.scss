@@ -1,0 +1,10 @@
+.editor {
+  max-width: 720px;
+  margin: auto;
+  padding-top: 50px;
+  font-family: 'Overpass Mono', monospace;
+
+  .ql-editor {
+    min-height: 100vh;
+  }
+}
