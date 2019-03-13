@@ -1,0 +1,39 @@
+.editor-container {
+  max-width: 720px;
+  margin: auto;
+}
+
+.editor {
+  padding-top: 50px;
+  font-family: 'Anonymous Pro', monospace;
+  font-size: 1rem;
+
+  p {
+    margin-bottom: 1.5rem;
+
+    &::selection {
+      // TODO: Commonise
+      background: #C1EDCA;
+    }
+  }
+
+  .ql-editor {
+    // TODO: Commonise
+    caret-color: #57B06B;
+    line-height: 1.3;
+  }
+
+  .ql-character {
+    text-transform: uppercase;
+    // TODO: Pull these from Final Draft?
+    padding-left: 40%;
+    padding-right: 40%;
+    margin-bottom: 0;
+  }
+
+  .ql-dialogue {
+    // TODO: Pull these from Final Draft?
+    padding-left: 30%;
+    padding-right: 30%;
+  }
+}

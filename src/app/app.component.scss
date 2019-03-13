@@ -1,1 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Overpass+Mono:400,700&subset=latin-ext');
+@import '../../node_modules/quill/dist/quill.core';
+
+@import url('https://fonts.googleapis.com/css?family=Anonymous+Pro:400,400i,700,700i|Arvo&subset=cyrillic,greek,latin-ext');
+
+body {
+  font-size: 16px;
+}

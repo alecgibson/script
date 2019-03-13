@@ -8,20 +8,22 @@ import Strike from 'quill/formats/strike';
 import Underline from 'quill/formats/underline';
 
 import Toolbar from 'quill/modules/toolbar';
+import ScriptTheme from './themes/script-theme';
 
-import Icons from 'quill/ui/icons';
+import * as Icons from 'quill/ui/icons';
 import Picker from 'quill/ui/picker';
 import ColorPicker from 'quill/ui/color-picker';
 import IconPicker from 'quill/ui/icon-picker';
 import Tooltip from 'quill/ui/tooltip';
 
-import BubbleTheme from 'quill/themes/bubble';
-
-adjustIconPaths(Icons);
-console.log(Icons);
+import ScriptBlockBlot from './blots/script-block-blot';
+import ScriptBlockFormat from './formats/script-block-format';
 
 Quill.register(
   {
+    'blots/block': ScriptBlockBlot,
+    'formats/script-block': ScriptBlockFormat,
+
     'formats/bold': Bold,
     'formats/italic': Italic,
     'formats/link': Link,
@@ -30,8 +32,7 @@ Quill.register(
     'formats/underline': Underline,
 
     'modules/toolbar': Toolbar,
-
-    'themes/bubble': BubbleTheme,
+    'themes/script': ScriptTheme,
 
     'ui/icons': Icons,
     'ui/picker': Picker,
@@ -41,16 +42,5 @@ Quill.register(
   },
   true,
 );
-
-function adjustIconPaths(icons) {
-  Object.keys(icons).forEach((key) => {
-    const value = icons[key];
-    if (typeof value === 'string') {
-      icons[key] = `assets/icons/${value}`;
-    } else {
-      adjustIconPaths(value);
-    }
-  });
-}
 
 export default Quill;

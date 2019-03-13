@@ -1,22 +1,18 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
-    "lib": [
-      "es6",
-      "dom"
-    ],
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "lib": ["es6", "dom"],
+    "typeRoots": ["node_modules/@types"]
   },
   "exclude": [
     "node_modules",
-    "src/main.aot.ts"
+    "src/main.ts"
   ]
 }

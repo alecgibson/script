@@ -1,20 +1,23 @@
 import Block from 'quill/blots/block';
+import { BlockService } from '../../services/block.service';
+import { QuillService } from '../../services/quill.service';
 
-class ScriptBlockBlot extends Block {
+export default class ScriptBlockBlot extends Block {
+  public static blotName = 'block';
+  public static tagName = 'P';
+
   insertAt(index, value, def) {
     super.insertAt(index, value, def);
-    this._updateClass();
+    this._ensureHasClass();
   }
 
   insertBefore(blot, ref) {
     super.insertBefore(blot, ref);
-    this._updateClass();
+    this._ensureHasClass();
   }
 
-  _updateClass() {
-    console.log('UPDATE CLASS');
-    console.log(this);
+  _ensureHasClass() {
+    // TODO: Check the previous block, and apply an appropriate class
+    new BlockService(new QuillService(null)).ensureHasClass(this);
   }
 }
-
-export default ScriptBlockBlot;

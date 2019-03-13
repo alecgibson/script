@@ -1,18 +1,25 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { EditorComponent } from './editor/editor.component';
+import { EditorComponent } from './components/editor/editor.component';
+import { BlockSelectComponent } from './components/block-select/block-select.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    EditorComponent
+    BlockSelectComponent,
+    EditorComponent,
+  ],
+  entryComponents: [
+    BlockSelectComponent,
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { }
