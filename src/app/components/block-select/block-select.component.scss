@@ -1,0 +1,20 @@
+.block-select-wrapper {
+  // TODO: Move into z-index file
+  z-index: 200;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  // TODO: Commonise
+  max-width: 720px;
+  text-align: right;
+  padding-top: 14px;
+
+  select {
+    font-family: 'Arvo', serif;
+    background: none;
+    border: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+}

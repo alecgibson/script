@@ -10,7 +10,7 @@ import { QuillService } from '../../services/quill.service';
   styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent implements OnInit {
-  private quill: any;
+  private _quill: any;
 
   constructor(
     private blockService: BlockService,
@@ -18,37 +18,48 @@ export class EditorComponent implements OnInit {
   ) { }
 
   public ngOnInit() {
-    this.quill = this.quillService.bindTo('#editor');
+    this._quill = this.quillService.bindTo('#editor');
 
+    this.setBlockTypeBinding();
     this.setKeyboardBindings();
 
-    setTimeout(() => this.quill.root.focus());
+    setTimeout(() => this._quill.root.focus());
+  }
+
+  private setBlockTypeBinding() {
+    this._quill.on('text-change', () => this.updateBlockType());
+    this._quill.on('selection-change', () => this.updateBlockType());
   }
 
   private setKeyboardBindings() {
     this.keepKeyBindings(['bold', 'italic']);
-    this.quill.keyboard.addBinding({ key: 'Tab' }, () => this.handleTab());
+    this._quill.keyboard.addBinding({ key: 'Tab' }, () => this.handleTab());
+  }
+
+  private updateBlockType() {
+    const currentParagraph = this.quillService.currentParagraph();
+    this.blockService.setBlockTypeFromParagraph(currentParagraph);
   }
 
   private keepKeyBindings(bindingKeysToKeep) {
     bindingKeysToKeep = new Set(bindingKeysToKeep);
 
-    const bindingKeys = Object.keys(this.quill.keyboard.bindings);
+    const bindingKeys = Object.keys(this._quill.keyboard.bindings);
     for (let index = 0; index < bindingKeys.length; index++) {
       const key = bindingKeys[index];
       if (!bindingKeysToKeep.has(key)) {
-        delete this.quill.keyboard.bindings[key];
+        delete this._quill.keyboard.bindings[key];
       }
     }
   }
 
   private handleTab() {
-    const selection = this.quill.getSelection();
+    const selection = this._quill.getSelection();
     if (!selection) {
       return;
     }
 
-    const blot = this.quill.getLeaf(selection.index);
+    const blot = this._quill.getLeaf(selection.index);
     this.blockService.toggle(blot);
   }
 }

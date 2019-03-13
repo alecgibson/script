@@ -1,17 +1,25 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnChanges, Input } from "@angular/core";
 import { BlockClass } from "../../quill/formats/block-class";
+import { BlockService } from "../../services/block.service";
 
 @Component({
   selector: 'app-block-select',
   templateUrl: './block-select.component.html',
+  styleUrls: ['./block-select.component.scss'],
 })
-export class BlockSelectComponent implements OnInit {
+export class BlockSelectComponent implements OnInit, OnChanges {
   public blockTypes = Object.keys(BlockClass);
+  public selectedBlockType: string;
 
-  public constructor() {}
+  public constructor(public blockService: BlockService) {
+    this.selectedBlockType = this.blockService.blockType;
+  }
 
-  public ngOnInit() {
-    // TODO: Add ngrepeat to HTML template and populate with BlockClass enum
-    // TODO: Watch a new service that tracks the current selection type
+  public ngOnInit() {}
+
+  public ngOnChanges(changes) {
+    console.log('CHANGES');
+    console.log(this.selectedBlockType);
+    console.log(changes);
   }
 }

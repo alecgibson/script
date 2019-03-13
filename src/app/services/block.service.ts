@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BlockClass } from "../quill/formats/block-class";
 import { QuillService } from "./quill.service";
+import { Subject } from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,43 @@ export class BlockService {
     BlockClass.Action,
   ];
 
-  constructor(private quillService: QuillService) {}
+  public blockType: string;
+  private blockTypeChange = new Subject<string>();
+
+  constructor(private quillService: QuillService) {
+    this.blockTypeChange.subscribe((value: string) => {
+      this.blockType = value;
+    });
+  }
+
+  public setBlockType(blockType: string) {
+    // TODO: Update current paragraph if needed
+    console.log('SET BLOCK TYPE');
+    console.log(blockType);
+    this.blockTypeChange.next(blockType);
+    console.log(this.blockType);
+  }
+
+  public setBlockTypeFromParagraph(paragraph: HTMLElement) {
+    if (!paragraph) {
+      return;
+    }
+
+    console.log('SET BLOCK TYPE FROM PARA');
+    const blockKeys = Object.keys(BlockClass);
+
+    for (let index = 0; index < blockKeys.length; index++) {
+      const key = blockKeys[index];
+      const value = BlockClass[key];
+
+      if (paragraph.classList.contains(value)) {
+        console.log('setting');
+        console.log(key);
+        this.setBlockType(key.toLowerCase());
+        return;
+      }
+    }
+  }
 
   public ensureHasClass(blot: any) {
     const paragraph = this.quillService.paragraphFromBlot(blot);

@@ -1,5 +1,8 @@
-<select class="block-select">
-  <option *ngFor="let blockType of blockTypes" value="{{ blockType.toLowerCase() }}">
-    {{ blockType }}
-  </option>
-</select>
+<div class="block-select-wrapper">
+  <p>Type: {{ selectedBlockType }}</p>
+  <select class="block-select" [(ngModel)]="selectedBlockType">
+    <option *ngFor="let blockType of blockTypes" [value]="blockType.toLowerCase()">
+      {{ blockType }}
+    </option>
+  </select>
+</div>

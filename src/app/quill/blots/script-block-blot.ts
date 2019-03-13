@@ -18,6 +18,6 @@ export default class ScriptBlockBlot extends Block {
 
   _ensureHasClass() {
     // TODO: Check the previous block, and apply an appropriate class
-    new BlockService(new QuillService(null)).ensureHasClass(this);
+    new BlockService(new QuillService()).ensureHasClass(this);
   }
 }
