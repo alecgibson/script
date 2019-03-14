@@ -5,6 +5,8 @@ import { QuillService } from '../../services/quill.service';
 export default class ScriptBlockBlot extends Block {
   public static blotName = 'block';
   public static tagName = 'P';
+  public domNode;
+  private readonly blockService = new BlockService(new QuillService());
 
   insertAt(index, value, def) {
     super.insertAt(index, value, def);
@@ -17,7 +19,10 @@ export default class ScriptBlockBlot extends Block {
   }
 
   _ensureHasClass() {
-    // TODO: Check the previous block, and apply an appropriate class
-    new BlockService(new QuillService()).ensureHasClass(this);
+    if (!this.domNode.innerText.trim()) {
+      this.blockService.removeAllBlockClasses(this.domNode);
+    }
+
+    this.blockService.ensureHasClass(this);
   }
 }

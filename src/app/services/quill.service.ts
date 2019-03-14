@@ -7,7 +7,6 @@ import { BlockClass } from "../quill/formats/block-class";
 })
 export class QuillService {
   private _quill: any;
-  private _blockSelect: HTMLElement;
 
   public constructor() { }
 
@@ -21,6 +20,13 @@ export class QuillService {
       console.log(this._quill.getContents());
     });
 
+    // TODO: Remove
+    this._quill.on('selection-change', (range) => {
+      if (!range) {
+        console.log('---LOST FOCUS---');
+      }
+    });
+
     return this._quill;
   }
 
@@ -29,7 +35,7 @@ export class QuillService {
   }
 
   public focus() {
-    this._quill.root.focus();
+    this._quill && this._quill.root.focus();
   }
 
   public paragraphFromBlot(blot: any) {
@@ -64,5 +70,15 @@ export class QuillService {
 
     const blot = this._quill.getLeaf(selection.index);
     return this.paragraphFromBlot(blot);
+  }
+
+  public formatBlot(blot: any, format: string, value: string) {
+    const index = this._quill.getIndex(blot);
+    if (typeof index !== 'number') {
+      return;
+    }
+
+    // TODO: Set source?
+    this._quill.formatLine(index, 1, format, value);
   }
 }

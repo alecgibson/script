@@ -20,8 +20,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
   public ngOnInit() {
     this._quill = this.quillService.bindTo('#editor');
 
-    this.setBlockTypeBinding();
     this.setKeyboardBindings();
+    this.setBlockTypeBinding();
 
     setTimeout(() => this.quillService.focus());
   }
