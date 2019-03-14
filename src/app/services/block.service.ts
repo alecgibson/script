@@ -7,7 +7,7 @@ import { Subject } from "rxjs";
   providedIn: 'root',
 })
 export class BlockService {
-  // TODO: Move into another service for eg drop-down selection
+  // TODO: Add mappings for going from one type to another
   // TODO: Add all Final Draft classes
   public static CLASSES = [
     BlockClass.Character,
@@ -15,21 +15,14 @@ export class BlockService {
     BlockClass.Action,
   ];
 
-  public blockType: string;
-  private blockTypeChange = new Subject<string>();
+  public blockType = new Subject<string>();
 
-  constructor(private quillService: QuillService) {
-    this.blockTypeChange.subscribe((value: string) => {
-      this.blockType = value;
-    });
-  }
+  constructor(private quillService: QuillService) {}
 
   public setBlockType(blockType: string) {
-    // TODO: Update current paragraph if needed
-    console.log('SET BLOCK TYPE');
-    console.log(blockType);
-    this.blockTypeChange.next(blockType);
-    console.log(this.blockType);
+    blockType = blockType.toLowerCase();
+    this.blockType.next(blockType);
+    this.setToClass(this.quillService.currentParagraph(), blockType);
   }
 
   public setBlockTypeFromParagraph(paragraph: HTMLElement) {
@@ -37,7 +30,6 @@ export class BlockService {
       return;
     }
 
-    console.log('SET BLOCK TYPE FROM PARA');
     const blockKeys = Object.keys(BlockClass);
 
     for (let index = 0; index < blockKeys.length; index++) {
@@ -45,9 +37,7 @@ export class BlockService {
       const value = BlockClass[key];
 
       if (paragraph.classList.contains(value)) {
-        console.log('setting');
-        console.log(key);
-        this.setBlockType(key.toLowerCase());
+        this.setBlockType(key);
         return;
       }
     }
@@ -96,5 +86,29 @@ export class BlockService {
         return;
       }
     }
+  }
+
+  private setToClass(paragraph: HTMLElement, blockType: string) {
+    if (!paragraph || !blockType) {
+      return;
+    }
+
+    const blockKey = Object.keys(BlockClass)
+      .find(key => key.toLowerCase() === blockType);
+
+    const blockClass = BlockClass[blockKey];
+
+    if (!blockClass || paragraph.classList.contains(blockClass)) {
+      return;
+    }
+
+    this.removeAllBlockClasses(paragraph);
+    paragraph.classList.add(blockClass);
+  }
+
+  private removeAllBlockClasses(paragraph: HTMLElement) {
+    Object.keys(BlockClass)
+      .map(key => BlockClass[key])
+      .forEach((blockClass: string) => paragraph.classList.remove(blockClass));
   }
 }

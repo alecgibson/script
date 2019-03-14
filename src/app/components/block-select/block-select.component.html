@@ -1,6 +1,6 @@
 <div class="block-select-wrapper">
-  <p>Type: {{ selectedBlockType }}</p>
-  <select class="block-select" [(ngModel)]="selectedBlockType">
+  <!-- TODO: JS select for better styling? -->
+  <select class="block-select" [(ngModel)]="selectedBlockType" (ngModelChange)="updateBlockType()">
     <option *ngFor="let blockType of blockTypes" [value]="blockType.toLowerCase()">
       {{ blockType }}
     </option>

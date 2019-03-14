@@ -1,6 +1,7 @@
 import BaseTheme from 'quill/themes/base';
 import icons from 'quill/ui/icons';
 
+// TODO: Disable formatting on certain elements (character names, scenes, etc.)
 export default class ScriptTheme extends BaseTheme {
   constructor(quill, options) {
     options.modules.toolbar.container = [['bold', 'italic']];
@@ -10,7 +11,5 @@ export default class ScriptTheme extends BaseTheme {
   extendToolbar(toolbar) {
     toolbar.container.classList.add('ql-script');
     this.buildButtons(toolbar.container.querySelectorAll('button'), icons);
-    // TODO: Put back when we have paragraph type select?
-    // this.buildPickers(toolbar.container.querySelectorAll('select'), icons);
   }
 }

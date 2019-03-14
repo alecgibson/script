@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, AfterViewInit } from '@angular/core';
 import { BlockService } from '../../services/block.service';
 import { QuillService } from '../../services/quill.service';
 
@@ -9,7 +9,7 @@ import { QuillService } from '../../services/quill.service';
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./editor.component.scss']
 })
-export class EditorComponent implements OnInit {
+export class EditorComponent implements OnInit, AfterViewInit {
   private _quill: any;
 
   constructor(
@@ -23,7 +23,11 @@ export class EditorComponent implements OnInit {
     this.setBlockTypeBinding();
     this.setKeyboardBindings();
 
-    setTimeout(() => this._quill.root.focus());
+    setTimeout(() => this.quillService.focus());
+  }
+
+  public ngAfterViewInit() {
+    setTimeout(() => this.updateBlockType());
   }
 
   private setBlockTypeBinding() {

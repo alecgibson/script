@@ -12,9 +12,7 @@ import { FormsModule } from '@angular/forms';
     BlockSelectComponent,
     EditorComponent,
   ],
-  entryComponents: [
-    BlockSelectComponent,
-  ],
+  entryComponents: [],
   imports: [
     BrowserModule,
     FormsModule,

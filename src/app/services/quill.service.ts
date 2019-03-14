@@ -28,6 +28,10 @@ export class QuillService {
     return this._quill;
   }
 
+  public focus() {
+    this._quill.root.focus();
+  }
+
   public paragraphFromBlot(blot: any) {
     if (!Array.isArray(blot)) {
       blot = [blot];
