@@ -35,7 +35,8 @@ export class BlockService {
     console.log('SET BLOCK TYPE');
     blockType = blockType.toLowerCase();
     this.blockType.next(blockType);
-    this.setToClass(this.quillService.currentParagraph(), blockType);
+    const blockClass = this.blockClass(blockType);
+    this.setToClass(this.quillService.currentParagraph(), blockClass);
   }
 
   public setBlockTypeFromParagraph(paragraph: Element) {
@@ -83,7 +84,7 @@ export class BlockService {
     this.applyNextClass(paragraph);
   }
 
-  public removeAllBlockClasses(blot: any) {
+  public removeAllBlockClasses(paragraph: Element) {
     console.log('REMOVE ALL BLOCK CLASSES');
     console.log(paragraph);
     Object.keys(BlockClass)
@@ -92,64 +93,78 @@ export class BlockService {
   }
 
   private applyNextClass(paragraph: Element) {
+    console.log('APPLY NEXT CLASS');
     if (!paragraph) {
       return;
     }
+    console.log(paragraph);
 
     if (this.hasDefaultClass(paragraph)) {
+      console.log('has default class');
       const blockType = this.paragraphBlockType(paragraph);
       const mapping = this.getMapping(blockType);
+      console.log(blockType);
+      console.log(mapping);
       return this.setToClass(paragraph, mapping.nextTab);
     }
 
+    console.log('apply loop');
     const blockKeys = Object.keys(BlockClass);
 
     for (let index = 0; index < blockKeys.length; index++) {
       const blockKey = blockKeys[index];
       const blockClass = BlockClass[blockKey];
+      console.log(blockKey);
+      console.log(blockClass);
 
-      if (!paragraph.classList.contains(blockClass)) {
-        continue;
+      if (paragraph.classList.contains(blockClass)) {
+        console.log('remove class');
+        paragraph.classList.remove(blockClass);
+
+        const nextIndex = index === blockKeys.length - 1 ? 0 : index + 1;
+        const nextKey = blockKeys[nextIndex];
+        const nextClass = BlockClass[nextKey];
+        console.log(nextKey);
+        console.log(nextClass);
+        paragraph.classList.add(nextClass);
+        return;
       }
-
-      paragraph.classList.remove(blockClass);
-
-      const nextIndex = index === blockKeys.length - 1 ? 0 : index + 1;
-      const nextKey = blockKeys[nextIndex];
-      const nextClass = BlockClass[nextKey];
-      paragraph.classList.add(nextClass);
     }
   }
 
   private hasDefaultClass(paragraph: Element): boolean {
+    console.log('HAS DEFAULT CLASS');
     const previousParagraph = paragraph.previousElementSibling;
     const previousType = this.paragraphBlockType(previousParagraph);
     const previousMapping = this.getMapping(previousType);
 
-    return previousMapping && previousMapping.nextParagraph === this.paragraphBlockType(paragraph);
+    console.log(previousParagraph);
+    console.log(previousType);
+    console.log(previousMapping);
+
+    return previousMapping && previousMapping.nextParagraph === this.paragraphBlockClass(paragraph);
   }
 
-  private setToClass(paragraph: Element, blockType: string) {
+  private setToClass(paragraph: Element, blockClass: string) {
     console.log('SET TO CLASS');
     console.log(paragraph);
-    console.log(blockType);
-    if (!paragraph || !blockType) {
-      return;
-    }
-
-    const blockKey = Object.keys(BlockClass)
-      .find(key => key.toLowerCase() === blockType);
-
-    const blockClass = BlockClass[blockKey];
-
-    if (!blockClass || paragraph.classList.contains(blockClass)) {
-      console.log('no need to change');
+    console.log(blockClass);
+    if (!paragraph || !blockClass) {
       return;
     }
 
     console.log(blockClass);
     this.removeAllBlockClasses(paragraph);
     paragraph.classList.add(blockClass);
+  }
+
+  private blockClass(blockType: string): string {
+    return blockType && BlockClass[blockType];
+  }
+
+  private paragraphBlockClass(paragraph: Element): string {
+    const blockType = this.paragraphBlockType(paragraph);
+    return this.blockClass(blockType);
   }
 
   private paragraphBlockType(paragraph: Element): string {

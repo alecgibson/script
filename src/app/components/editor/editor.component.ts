@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, AfterViewInit } from '@angular/core';
 import { BlockService } from '../../services/block.service';
 import { QuillService } from '../../services/quill.service';
+import ScriptBlockBlot from '../../quill/blots/script-block-blot';
 
 @Component({
   selector: 'app-editor',
@@ -18,6 +19,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
   ) { }
 
   public ngOnInit() {
+    // We don't have Angular DI available to the blots, so inject here manually.
+    ScriptBlockBlot.blockService = this.blockService;
     this._quill = this.quillService.bindTo('#editor');
 
     this.setKeyboardBindings();

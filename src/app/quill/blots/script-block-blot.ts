@@ -1,12 +1,11 @@
 import Block from 'quill/blots/block';
 import { BlockService } from '../../services/block.service';
-import { QuillService } from '../../services/quill.service';
 
 export default class ScriptBlockBlot extends Block {
   public static blotName = 'block';
   public static tagName = 'P';
+  public static blockService: BlockService;
   public domNode;
-  private readonly blockService = new BlockService(new QuillService());
 
   insertAt(index, value, def) {
     super.insertAt(index, value, def);
@@ -19,10 +18,14 @@ export default class ScriptBlockBlot extends Block {
   }
 
   _ensureHasClass() {
-    if (!this.domNode.innerText.trim()) {
-      this.blockService.removeAllBlockClasses(this.domNode);
+    if (!ScriptBlockBlot.blockService) {
+      return;
     }
 
-    this.blockService.ensureHasClass(this);
+    if (!this.domNode.innerText.trim()) {
+      ScriptBlockBlot.blockService.removeAllBlockClasses(this.domNode);
+    }
+
+    ScriptBlockBlot.blockService.ensureHasClass(this);
   }
 }
